@@ -4,7 +4,7 @@
       To finish your
       <code class="text-2xl ml-2 text-green-600">workweek-countdown</code>
     </h2>
-    <CounterClock />
+    <CounterClock :minutes="props.minutes" />
 
     <div>
       <h3 class="text-lg leading-6 font-medium text-center">
@@ -21,4 +21,8 @@
 
 <script setup lang="ts">
 import WorktimeInput from './WorktimeInput.vue'
+
+const props = defineProps({
+  minutes: { type: Number, required: true },
+})
 </script>

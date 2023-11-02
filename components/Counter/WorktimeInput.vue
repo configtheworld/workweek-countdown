@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="parent">
-      <div><span class="text-3xl font-bold">:</span></div>
+      <div><span class="text-3xl font-bold pr-32">:</span></div>
 
       <div class="child mt-[-25px]">
         <form>
@@ -12,7 +12,7 @@
             v-model="code[index]"
             type="number"
             pattern="\d*"
-            class="border-2 border-gray-300 text-center rounded-lg"
+            class="border-2 border-gray-300 text-center rounded-lg max-w-[70px]"
             maxlength="1"
             @input="handleInput"
             @keypress="isNumber"

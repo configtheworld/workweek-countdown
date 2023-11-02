@@ -4,8 +4,8 @@
       <span v-if="hours > 0">
         <span class="text-8xl font-bold">{{ hours }}</span> hrs
       </span>
-      <span v-if="minutes > 0">
-        <span class="text-8xl font-bold">{{ minutes }}</span> mins
+      <span v-if="minutesRef > 0">
+        <span class="text-8xl font-bold">{{ minutesRef }}</span> mins
       </span>
 
       <span class="text-2xl font-bold">left</span>
@@ -16,11 +16,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-const totalMinutes = ref(1212)
+// const totalMinutes = ref(1212)
 const hours = ref(0)
-const minutes = ref(0)
+const minutesRef = ref(0)
 onMounted(() => {
-  hours.value = Math.floor(totalMinutes.value / 60)
-  minutes.value = totalMinutes.value % 60
+  hours.value = Math.floor(props.minutes / 60)
+  minutesRef.value = props.minutes % 60
+})
+
+const props = defineProps({
+  minutes: { type: Number, required: true },
 })
 </script>
