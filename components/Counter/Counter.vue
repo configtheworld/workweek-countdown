@@ -15,25 +15,27 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import type { Counter } from "../../types/Counter";
+import useCounters from "~/composables/useCounters";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const counterInfo = ref<Counter[]>([]);
+const { auth } = useFirebaseClient();
 
 onMounted(async () => {
-  // const counters = await getCounterInfo()
-  // counterInfo.value = counters.map((item: DocumentData) => {
-  //   return {
-  //     name: item.name as string,
-  //     minutes: item.minutes as number,
-  //     userId: item.userId as string,
-  //   }
-  // })
-  counterInfo.value = [{ name: "work fe", minutes: 231, userId: "1" }];
+  const counters = await useCounters();
+  if (counters !== null) {
+    counterInfo.value = counters;
+  }
+  signInWithEmailAndPassword(auth, "erkin@pa.com", "123123")
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log(user);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
 });
-
-// async function getCounterInfo() {
-//   const citiesCol = collection(db, 'counters')
-//   const citySnapshot = await getDocs(citiesCol)
-//   const cityList = citySnapshot.docs.map((doc) => doc.data())
-//   return cityList
-// }
 </script>
