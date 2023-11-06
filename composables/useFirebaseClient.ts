@@ -14,8 +14,6 @@ export const useFirebaseClient = () => {
     measurementId: runtimeConfig.public.firebase.measurementId,
   };
 
-  console.log("firebaseConfig", firebaseConfig);
-
   const firebaseApp = initializeApp(firebaseConfig);
   const firestore = getFirestore(firebaseApp);
   const auth = getAuth(firebaseApp);

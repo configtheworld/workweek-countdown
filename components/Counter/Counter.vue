@@ -26,16 +26,14 @@ onMounted(async () => {
   if (counters !== null) {
     counterInfo.value = counters;
   }
-  signInWithEmailAndPassword(auth, "erkin@pa.com", "123123")
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      console.log(user);
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+  // signInWithEmailAndPassword(auth, "", "")
+  //   .then((userCredential) => {
+  //     // Signed in
+  //     const user = userCredential.user;
+  //   })
+  //   .catch((error) => {
+  //     const errorCode = error.code;
+  //     const errorMessage = error.message;
+  //   });
 });
 </script>
