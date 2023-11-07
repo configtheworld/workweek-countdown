@@ -3,7 +3,10 @@
 </template>
 
 <script setup lang="ts">
-// useCounters cekip (token ile) listeliyecek
+// TODO useCounters cekip (token ile) listeliyecek
+definePageMeta({
+  middleware: "auth",
+});
 </script>
 
 <style scoped></style>

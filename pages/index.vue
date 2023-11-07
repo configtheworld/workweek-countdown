@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Coutner />
+    <Counter />
   </div>
 </template>
 

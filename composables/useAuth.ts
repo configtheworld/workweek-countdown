@@ -5,30 +5,36 @@ import {
   setPersistence,
   signInWithPopup,
 } from "firebase/auth";
+import { useAuthUser } from "./useAuthUser";
 
 export const useAuth = () => {
   const { auth } = useFirebaseClient();
 
-  const setUser = (user: any) => {};
+  const authUser = useAuthUser();
+
+  const setUser = (user: any) => {
+    authUser.value = user;
+  };
 
   const setCookie = (cookie: any) => {
     cookie.value = cookie;
   };
 
-  //   const me = async () => {
-  //     if (!authUser.value) {
-  //       try {
-  //         const data = await $fetch("/api/auth/me", {
-  //           headers: useRequestHeaders(["cookie"]) as HeadersInit,
-  //         });
+  const me = async () => {
+    if (!authUser.value) {
+      try {
+        const data = await $fetch("/api/auth/me", {
+          headers: useRequestHeaders(["cookie"]) as HeadersInit,
+        });
 
-  //       } catch (error) {
-  //         setCookie(null);
-  //       }
-  //     }
+        setUser(data.user);
+      } catch (error) {
+        setCookie(null);
+      }
+    }
 
-  //     return authUser;
-  //   };
+    return authUser;
+  };
 
   const loginWithGoogle = async () => {
     try {
@@ -42,21 +48,24 @@ export const useAuth = () => {
         method: "POST",
         body: JSON.stringify({ firebaseIdToken }),
       });
+
+      setUser(data.user);
     } catch (error) {
       console.log(error);
       setCookie(null);
+      setUser(null);
     }
 
     return authUser;
   };
 
-  //   const logout = async () => {
-  //     { data } = await $fetch("/api/auth/logout", {
-  //       method: "POST",
-  //     });
+  const logout = async () => {
+    const data = await $fetch("/api/auth/logout", {
+      method: "POST",
+    });
 
-  //     setUser(serverData.value.user);
-  //   };
+    setUser(data.user);
+  };
 
   return {
     logout,

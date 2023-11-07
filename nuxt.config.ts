@@ -1,9 +1,13 @@
+const ONE_DAY = 60 * 60 * 24 * 1000;
+const ONE_WEEK = ONE_DAY * 7;
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss"],
   runtimeConfig: {
     public: {
+      authCookieName: "__session",
+      authCookieExpires: parseInt(ONE_WEEK.toString(), 10),
       firebase: {
         apiKey: process.env.FIREBASE_API_KEY,
         authDomain: process.env.FIREBASE_AUTH_DOMAIN,
