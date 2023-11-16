@@ -1,5 +1,1 @@
-export interface Counter {
-  name: string;
-  minutes: number;
-  userId: string;
-}
+export type Counter = { name: string; minutes: number; userId: string };
