@@ -19,19 +19,22 @@ const { me, logout, loginWithGoogle } = useAppAuth();
 definePageMeta({
   middleware: "notauth",
 });
+const authFlag = ref(false);
+const router = useRouter();
 
 const handleLogin = async () => {
   try {
     await loginWithGoogle();
-    navigateTo("/");
+    router.push("/");
   } catch (error) {
     console.error(error);
   }
 };
+const authStore = useAuthStore();
 
 const handleCheckStates = async () => {
   try {
-    console.log(await me());
+    console.log(authStore.accessToken);
   } catch (error) {
     console.error(error);
   }

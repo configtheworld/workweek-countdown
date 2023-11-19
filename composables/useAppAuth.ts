@@ -5,28 +5,19 @@ export const useAppAuth = () => {
 
   const me = async () => {
     const store = useAuthStore();
-    if (store.uid !== "") {
+    if (Object.keys(store.user).length > 0) {
       return store.user;
     } else {
       return null;
     }
   };
 
-  const userToken = async () => {
+  const getAccessToken = async () => {
     const store = useAuthStore();
     if (store.accessToken !== "") {
       return store.accessToken;
     } else {
-      return "";
-    }
-  };
-
-  const isAuth = async () => {
-    const store = useAuthStore();
-    if (store.uid === "") {
-      return false;
-    } else {
-      return true;
+      return null;
     }
   };
 
@@ -39,12 +30,14 @@ export const useAppAuth = () => {
         .then((result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           if (credential !== null) {
-            if (credential.accessToken) {
-              store.setAccessToken(credential.accessToken);
+            if (credential.idToken) {
+              // store.setAccessToken(credential.accessToken);
               //store.accessToken = credential.accessToken;
               store.setUser(result.user.toJSON());
+              console.log(credential);
+              store.setAccessToken(credential.idToken);
               // store.user = result.user;
-              store.setUid(result.user.uid);
+              // store.setUid(result.user.uid);
               // store.uid = result.user.uid;
             }
           }
@@ -58,27 +51,27 @@ export const useAppAuth = () => {
           // The AuthCredential type that was used.
           const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
+          store.user = {};
+          store.accessToken = "";
         });
     } catch (error) {
       console.log(error);
-      store.uid = "";
       store.user = {};
+      store.accessToken = "";
     }
   };
 
   const logout = async () => {
     const store = useAuthStore();
     console.log("logout comsosable called");
-    // remove user from pinia
-    store.uid = "";
     store.user = {};
+    store.accessToken = "";
   };
 
   return {
     logout,
     loginWithGoogle,
     me,
-    userToken,
-    isAuth,
+    getAccessToken,
   };
 };

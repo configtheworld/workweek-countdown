@@ -1,8 +1,6 @@
 export default defineNuxtRouteMiddleware((to, from) => {
   const store = useAuthStore();
-  if (store.uid === "") {
+  if (store.accessToken === "") {
     return navigateTo("/signin");
-  } else {
-    return navigateTo("/counter-list");
   }
 });

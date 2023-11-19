@@ -19,19 +19,27 @@ import type { Counter } from "../../types/Counter";
 import { useAppAuth } from "~/composables/useAppAuth";
 
 const counterInfo = ref<Counter[]>([]);
-const { userToken } = useAppAuth();
+const { getAccessToken } = useAppAuth();
 
 onMounted(async () => {
   try {
     nextTick(async () => {
-      const { data: serverData } = await useFetch("/api/counters", {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (serverData.value !== null) {
-        counterInfo.value = serverData.value;
+      // const user = (await me()) as { accessToken?: string };
+      const token = await getAccessToken();
+      console.log(token);
+      if (token) {
+        const { data: serverData } = await useFetch("/api/counters", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (serverData.value !== null) {
+          counterInfo.value = serverData.value;
+        }
+      } else {
+        console.error("User object or access token is missing.");
       }
     });
   } catch (error) {
