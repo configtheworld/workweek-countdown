@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
     try {
       const decodedToken = await getAuth().verifyIdToken(token);
       const uid = decodedToken.uid;
-      console.log(uid);
       validToken = true;
     } catch (error) {
       console.error(error);

@@ -3,7 +3,7 @@ const ONE_WEEK = ONE_DAY * 7;
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt"],
+  modules: ["@nuxtjs/tailwindcss"],
   runtimeConfig: {
     public: {
       authCookieName: "__session",

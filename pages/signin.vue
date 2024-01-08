@@ -5,9 +5,6 @@
       <li>
         <button @click="handleLogin">signing with google</button>
       </li>
-      <li>
-        <button @click="handleCheckStates">Check States</button>
-      </li>
     </ul>
     <hr />
   </div>
@@ -15,47 +12,23 @@
 
 <script setup lang="ts">
 import { useAppAuth } from "~/composables/useAppAuth";
-const { me, logout, loginWithGoogle } = useAppAuth();
+const { loginWithGoogle } = useAppAuth();
+const router = useRouter();
+const userCookie = useCookie("user");
 definePageMeta({
   middleware: "notauth",
 });
-const authFlag = ref(false);
-const router = useRouter();
-
 const handleLogin = async () => {
   try {
-    await loginWithGoogle();
-    router.push("/");
+    const user = await loginWithGoogle();
+    if (user) {
+      userCookie.value = JSON.stringify(user);
+      router.push("/");
+    }
   } catch (error) {
     console.error(error);
   }
 };
-const authStore = useAuthStore();
-
-const handleCheckStates = async () => {
-  try {
-    console.log(authStore.accessToken);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const handleLogout = async () => {
-  try {
-    await logout();
-    await navigateTo("/");
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-onMounted(async () => {
-  try {
-    console.log(await me());
-  } catch (error) {
-    console.error(error);
-  }
-});
 </script>
 
 <style scoped></style>

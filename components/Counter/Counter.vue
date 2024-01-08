@@ -14,34 +14,25 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, nextTick } from "vue";
+import { onMounted, ref } from "vue";
 import type { Counter } from "../../types/Counter";
-import { useAppAuth } from "~/composables/useAppAuth";
+import axios from "axios";
 
+interface UserType {
+  user: { stsTokenManager: { accessToken: string } };
+  token: string;
+}
 const counterInfo = ref<Counter[]>([]);
-const { getAccessToken } = useAppAuth();
-
+const userCookie = useCookie<UserType>("user");
 onMounted(async () => {
   try {
-    nextTick(async () => {
-      // const user = (await me()) as { accessToken?: string };
-      const token = await getAccessToken();
-      console.log(token);
-      if (token) {
-        const { data: serverData } = await useFetch("/api/counters", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (serverData.value !== null) {
-          counterInfo.value = serverData.value;
-        }
-      } else {
-        console.error("User object or access token is missing.");
-      }
+    const response = await axios.get("/api/counters", {
+      headers: {
+        Authorization:
+          "Bearer " + userCookie.value.user.stsTokenManager.accessToken,
+      },
     });
+    counterInfo.value = response.data;
   } catch (error) {
     console.error("Error fetching counters:", error);
   }
